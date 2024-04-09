@@ -33,7 +33,7 @@ void BaseCharacter::tick(float deltaTime)
     }
 
     // Draw enemy
-    Rectangle source{frame * width, 0.f, rightLeft * width / 6.0f, height};
+    Rectangle source{frame * width, 0.f, rightLeft * width, height};
     Rectangle dest{screenPos.x, screenPos.y, scale * width, scale * height};
     DrawTexturePro(texture, source, dest, Vector2{}, 0.0, WHITE);
 }
