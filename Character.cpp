@@ -1,22 +1,17 @@
 #include "Character.h"
 #include "raymath.h"
 
-Character::Character()
+Character::Character(int winWidth, int winHeight)
 {
     width = texture.width / maxFrame;
     height = texture.height;
-}
-
-void Character::setScreenPos(int winWidth, int winHeight)
-{
-    screenPos = {
-        (float)winWidth / 2.0f - 4.0f * (width / 2.0f),
-        (float)winHeight / 2.0f - 4.0f * (height / 2.0f)};
+    screenPos = {static_cast<float>(winWidth) / 2.f - scale * (width / 2.f),
+                 static_cast<float>(winHeight) / 2.f - scale * height / 2.f};
 }
 
 void Character::tick(float deltaTime)
 {
-    worldPosLastFrame = worldPos;
+    BaseCharacter::tick(deltaTime);
 
     Vector2 direction{};
     if (IsKeyDown(KEY_A))
@@ -38,25 +33,4 @@ void Character::tick(float deltaTime)
     {
         texture = idle;
     }
-
-    // Update animation frame
-    runningTime += deltaTime;
-    if (runningTime >= updateTime)
-    {
-        frame++;
-        runningTime = 0.f;
-        if (frame > maxFrame)
-            frame = 0.f;
-    }
-
-    // Draw character
-    Rectangle source{frame * width, 0.f, rightLeft * width / 6.0f, height};
-    Rectangle dest{screenPos.x, screenPos.y, 4.0f * width, 4.0f * height};
-    DrawTexturePro(texture, source, dest, Vector2{}, 0.0, WHITE);
-
-}
-
-void Character::undoMovement()
-{
-    worldPos = worldPosLastFrame;
 }
